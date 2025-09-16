@@ -1,8 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images: {
-    domains: ["fortunemattresses.com"], // 👈 add your domain here
+  async headers() {
+    return [
+      {
+        source: "/assets/:all*",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "model/gltf-binary",
+          },
+        ],
+      },
+    ];
   },
 };
 

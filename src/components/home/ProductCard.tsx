@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState, useMemo, useEffect } from "react";
+import React, { Suspense, useState, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,8 +14,7 @@ interface ProductCardProps {
 }
 
 const Model = ({ url }: { url: string }) => {
-  // const { scene } = useGLTF(url);
-  const { scene } = useGLTF("/assets/PremiumProduct/pink_headphones.glb");
+  const { scene } = useGLTF(url);
 
   // ✅ Deep clone to allow multiple instances of the same model
   const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
@@ -35,10 +34,6 @@ const Model = ({ url }: { url: string }) => {
 
 const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    useGLTF.preload("/assets/PremiumProduct/pink_headphones.glb");
-  }, []);
 
   return (
     <div className="p-4 text-center bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl transition">

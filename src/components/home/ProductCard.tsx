@@ -35,38 +35,65 @@ const Model = ({ url }: { url: string }) => {
 const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  const is3DModel = image.endsWith(".glb") || image.endsWith(".gltf");
+
   return (
-    <div className="p-4 text-center bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl transition">
+    <div
+      className={`relative group p-4 text-center bg-white rounded-xl 
+  border border-gray-200 shadow-lg transform transition duration-300
+  hover:-translate-y-2 hover:rotate-1 hover:shadow-2xl `} // ✅ border color only
+      style={{ perspective: "1000px" }}
+    >
+      {/* Glow effect */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-tr   to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+
       <div
-        className="relative w-full h-48 mb-4 rounded-lg overflow-hidden"
+        className="relative w-full h-48 mb-4 rounded-lg overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 shadow-inner"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        style={{
+          transformStyle: "preserve-3d",
+          transform: isHovered
+            ? "rotateX(5deg) rotateY(-5deg)"
+            : "rotateX(0) rotateY(0)",
+          transition: "transform 0.4s ease",
+        }}
       >
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <Suspense
-            fallback={
-              <mesh>
-                <boxGeometry />
-                <meshStandardMaterial color="gray" />
-              </mesh>
-            }
-          >
-            <ambientLight intensity={0.7} />
-            <directionalLight position={[5, 5, 5]} intensity={1.2} />
-            <Model url={image} />
-            <OrbitControls
-              makeDefault
-              enablePan={false}
-              enableZoom={true}
-              enableRotate={isHovered}
-            />
-          </Suspense>
-        </Canvas>
+        {is3DModel ? (
+          <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+            <Suspense
+              fallback={
+                <mesh>
+                  <boxGeometry />
+                  <meshStandardMaterial color="gray" />
+                </mesh>
+              }
+            >
+              <ambientLight intensity={0.7} />
+              <directionalLight position={[5, 5, 5]} intensity={1.2} />
+              <Model url={image} />
+              <OrbitControls
+                makeDefault
+                enablePan={false}
+                enableZoom={true}
+                enableRotate={isHovered}
+              />
+            </Suspense>
+          </Canvas>
+        ) : (
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover rounded-lg transform transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
       </div>
 
-      <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-600 transition">
+        {title}
+      </h3>
       <div className="mt-2 flex justify-center items-center gap-2">
-        <span className="text-yellow-500 font-bold text-lg">
+        <span className="text-yellow-500 font-bold text-lg drop-shadow-sm">
           ${(price - (price * discount) / 100).toFixed(2)}
         </span>
         {discount > 0 && (
@@ -76,15 +103,12 @@ const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
         )}
       </div>
       {discount > 0 && (
-        <span className="inline-block mt-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+        <span className="inline-block mt-2 bg-red-500 text-white text-xs px-3 py-1 rounded-full shadow-md transform group-hover:scale-110 transition">
           {discount}% OFF
         </span>
       )}
     </div>
   );
 };
-
-// ✅ Preload for performance
-useGLTF.preload("/assets/PremiumProduct/pink_headphones.glb");
 
 export default ProductCard;

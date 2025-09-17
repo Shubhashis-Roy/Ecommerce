@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import CarouselSidebar from "@/components/home/CarouselSidebar";
+// import CarouselSidebar from "@/components/home/CarouselSidebar";
 import PremiumProduct from "@/components/home/PremiumProduct";
 import FeaturedDeals from "@/components/home/FeaturedDeals";
+import Hero from "@/components/home/Hero";
 
 export default function Home() {
   // Scroll to top when page loads
@@ -18,7 +19,8 @@ export default function Home() {
   return (
     <>
       <Header />
-      <CarouselSidebar />
+      {/* <CarouselSidebar /> */}
+      <Hero />
       <PremiumProduct />
       <FeaturedDeals />
       <Footer />

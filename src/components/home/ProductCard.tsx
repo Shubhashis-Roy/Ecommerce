@@ -1,10 +1,9 @@
 "use client";
 
-import React, { Suspense, useState, useMemo } from "react";
+import React, { Suspense, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { useGLTF, OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
-import { SkeletonUtils } from "three-stdlib";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { Model } from "./Model";
 
 interface ProductCardProps {
   image: string;
@@ -12,25 +11,6 @@ interface ProductCardProps {
   price: number;
   discount: number;
 }
-
-const Model = ({ url }: { url: string }) => {
-  const { scene } = useGLTF(url);
-
-  // ✅ Deep clone to allow multiple instances of the same model
-  const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
-
-  useMemo(() => {
-    const box = new THREE.Box3().setFromObject(clonedScene);
-    const size = box.getSize(new THREE.Vector3()).length();
-    const center = box.getCenter(new THREE.Vector3());
-    clonedScene.position.sub(center);
-
-    const scale = 2 / size;
-    clonedScene.scale.set(scale, scale, scale);
-  }, [clonedScene]);
-
-  return <primitive object={clonedScene} />;
-};
 
 const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -58,7 +38,7 @@ const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
               makeDefault
               enablePan={false}
               enableZoom={true}
-              enableRotate={isHovered}
+              enableRotate={isHovered} // rotate only on hover
             />
           </Suspense>
         </Canvas>
@@ -84,7 +64,7 @@ const ProductCard = ({ image, title, price, discount }: ProductCardProps) => {
   );
 };
 
-// ✅ Preload for performance
+// Preload for performance
 useGLTF.preload("/assets/PremiumProduct/pink_headphones.glb");
 
 export default ProductCard;

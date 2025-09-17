@@ -50,30 +50,39 @@ const PremiumProduct = () => {
   const products = [
     {
       image: "/assets/PremiumProduct/pink_headphones.glb",
+      // image: "/assets/PremiumProduct/PremiumProduct.png",
       title: "Flagship Smartphone",
       price: 999.99,
       discount: 12,
     },
     {
       image: "/assets/PremiumProduct/pink_headphones.glb",
+      // image: "/assets/PremiumProduct/PremiumProduct.png",
+
       title: "Flagship Smartphone",
       price: 999.99,
       discount: 12,
     },
     {
       image: "/assets/PremiumProduct/pink_headphones.glb",
+      // image: "/assets/PremiumProduct/PremiumProduct.png",
+
       title: "Flagship Smartphone",
       price: 999.99,
       discount: 12,
     },
     {
       image: "/assets/PremiumProduct/pink_headphones.glb",
+      // image: "/assets/PremiumProduct/PremiumProduct.png",
+
       title: "Flagship Smartphone",
       price: 999.99,
       discount: 12,
     },
     {
       image: "/assets/PremiumProduct/pink_headphones.glb",
+      // image: "/assets/PremiumProduct/PremiumProduct.png",
+
       title: "Flagship Smartphone",
       price: 999.99,
       discount: 12,
